@@ -29,6 +29,11 @@
   class CWinEGLPlatformAndroid;
   #define CWinEGLPlatform CWinEGLPlatformAndroid
 
+#elif defined(HAVE_KMS)
+  #include "xbmc/windowing/egl/WinEGLPlatformKMS.h"
+  class CWinEGLPlatformKMS;
+  #define CWinEGLPlatform CWinEGLPlatformKMS
+
 #else
   #include "xbmc/windowing/egl/WinEGLPlatformGeneric.h"
   class CWinEGLPlatformGeneric;

@@ -107,6 +107,8 @@ rsxs_enabled="== RSXS enabled. =="
 rsxs_disabled="== RSXS disabled. =="
 projectm_enabled="== ProjectM enabled. =="
 projectm_disabled="== ProjectM disabled. =="
+kms_enabled="== KMS enabled. =="
+kms_disabled="== KMS disabled. =="
 x11_enabled="== X11 enabled. =="
 x11_disabled="== X11 disabled. =="
 pulse_not_found="== Could not find libpulse. PulseAudio support disabled. =="
@@ -297,6 +299,12 @@ AC_ARG_ENABLE([projectm],
   [enable ProjectM visualisation (default is yes)])],
   [use_projectm=$enableval],
   [use_projectm=yes])
+
+AC_ARG_ENABLE([kms],
+  [AS_HELP_STRING([--enable-kms],
+  [enable kms (default is yes) 'Linux Only'])],
+  [use_kms=$enableval],
+  [use_kms=no])
 
 AC_ARG_ENABLE([x11],
   [AS_HELP_STRING([--enable-x11],
@@ -1112,6 +1120,20 @@ else
   fi
 fi
 
+# KMS
+if test "$use_kms" = "yes" && test "$host_vendor" != "apple"; then
+  AC_MSG_NOTICE($kms_enabled)
+  PKG_CHECK_MODULES([GBM],      [gbm],
+    [INCLUDES="$INCLUDES $GBM_CFLAGS" LIBS="$LIBS $GBM_LIBS"],
+    [AC_MSG_ERROR($missing_library)])
+  PKG_CHECK_MODULES([DRM],      [libdrm],
+    [INCLUDES="$INCLUDES $DRM_CFLAGS" LIBS="$LIBS $DRM_LIBS"],
+    [AC_MSG_ERROR($missing_library)])
+  AC_DEFINE([HAVE_KMS], [1], [Define to 1 if you have KMS libs installed.])
+else
+  AC_MSG_RESULT($kms_disabled)
+fi
+
 # X11
 if test "$use_x11" = "yes" && test "$host_vendor" != "apple"; then
   AC_MSG_NOTICE($x11_enabled)
@@ -1907,6 +1929,12 @@ if test "$use_skin_touched" = "yes"; then
   final_message="$final_message\n  Skin Touched:\tYes"
 else
   final_message="$final_message\n  Skin Touched:\tNo"
+fi
+
+if test "$use_kms" = "yes"; then
+  final_message="$final_message\n  KMS:\t\tYes"
+else
+  final_message="$final_message\n  KMS:\t\tNo"
 fi
 
 if test "$use_x11" = "yes"; then
