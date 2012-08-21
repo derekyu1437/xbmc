@@ -179,6 +179,10 @@
 #endif
 #endif
 
+#if defined(TARGET_LINUX) && !defined(HAS_SDL_WIN_EVENTS)
+#define HAS_LINUX_EVENTS
+#endif
+
 #ifdef HAVE_LIBSSH
 #define HAS_FILESYSTEM_SFTP
 #endif
