@@ -57,6 +57,7 @@ private:
   XBMCMod UpdateModifiers(XBMC_Event& devt);
   bool GetKeymapEntry(KeymapEntry& entry);
   int KeyboardGetSymbol(unsigned short value);
+  void SetupKeyboardAutoRepeat(int fd);
 
   int m_fd;
   int m_vt_fd;
