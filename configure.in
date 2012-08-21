@@ -1870,7 +1870,7 @@ else
   final_message="$final_message\n  OpenMax:\tNo"
 fi
 
-if test "$use_joystick" = "yes"; then
+if test "$use_joystick" = "yes" -a "$use_sdl" = "yes"; then
   final_message="$final_message\n  Joystick:\tYes"
   SDL_DEFINES="$SDL_DEFINES -DHAS_SDL_JOYSTICK"
 else
