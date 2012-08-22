@@ -54,6 +54,8 @@ public:
   virtual bool  Hide();
   virtual bool  Show(bool raise = true);
 
+  EGLNativeDisplayType GetDisplay() const { return m_display; }
+
   EGLDisplay    GetEGLDisplay();
   EGLContext    GetEGLContext();
 

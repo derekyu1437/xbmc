@@ -46,8 +46,8 @@ CWinSystemGLES::~CWinSystemGLES()
 
 bool CWinSystemGLES::InitWindowSystem()
 {
-  m_display = EGL_DEFAULT_DISPLAY;
-  m_window = m_eglplatform->InitWindowSystem(m_display, 1920, 1080, 8);
+  m_window = m_eglplatform->InitWindowSystem(EGL_DEFAULT_DISPLAY, 1920, 1080, 8);
+  m_display = m_eglplatform->GetDisplay();
   
   // Initialize the display
   // This needs to happen before the call to CWinSystemBase::InitWindowSystem()
