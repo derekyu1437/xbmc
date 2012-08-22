@@ -89,13 +89,25 @@ static CDisplayPtr GetGlobalDisplay()
     return display;
   }
 
-  VADisplay disp;
+  VADisplay disp = NULL;
 #ifdef HAVE_VA_GLX
-  disp = vaGetDisplayGLX(g_Windowing.GetDisplay());
+  if (!disp)
+    disp = vaGetDisplayGLX(g_Windowing.GetDisplay());
 #endif
 #ifdef HAVE_VA_X11
-  disp = vaGetDisplay(g_Windowing.GetDisplay());
+  if (!disp)
+    disp = vaGetDisplay(g_Windowing.GetDisplay());
 #endif
+#if defined(HAVE_VA_DRM) && defined(HAVE_KMS)
+  if (!disp)
+    disp = vaGetDisplayDRM(gbm_device_get_fd(g_Windowing.GetDisplay()));
+#endif
+  if (!disp)
+  {
+    CLog::Log(LOGERROR, "VAAPI - failed to obtain a valid display");
+    display.reset();
+    return display;
+  }
 
   int major_version, minor_version;
   VAStatus res = vaInitialize(disp, &major_version, &minor_version);

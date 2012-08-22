@@ -35,6 +35,9 @@
 #ifdef HAVE_VA_GLX
 # include <va/va_glx.h>
 #endif
+#ifdef HAVE_VA_DRM
+# include <va/va_drm.h>
+#endif
 #ifdef HAVE_VA_EGL
 # include <va/va_egl.h>
 #endif
